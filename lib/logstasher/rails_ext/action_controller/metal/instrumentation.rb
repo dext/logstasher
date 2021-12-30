@@ -7,14 +7,12 @@ module ActionController
       raw_payload = {
         controller: self.class.name,
         action: action_name,
+        request: request,
         params: request.filtered_parameters,
-        format: request.format.try(:ref),
-        method: request.method,
-        path: begin
-          request.fullpath
-        rescue StandardError
-          'unknown'
-        end
+        headers: request.headers,
+        format: request.format.ref,
+        method: request.request_method,
+        path: request.fullpath
       }
 
       LogStasher.add_default_fields_to_payload(raw_payload, request)
